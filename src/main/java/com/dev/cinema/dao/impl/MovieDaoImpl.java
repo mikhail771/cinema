@@ -27,15 +27,15 @@ public class MovieDaoImpl implements MovieDao {
             }
             throw new DataProcessingException("Can't insert Movie entity", e);
         } finally {
-            session.close();
+            if (session != null) {
+                session.close();
+            }
         }
     }
 
     @Override
     public List<Movie> getAll() {
-        Session session = null;
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Query<Movie> getAllMoviesQuery = session.createQuery("from Movie", Movie.class);
             return getAllMoviesQuery.getResultList();
         } catch (Exception e) {

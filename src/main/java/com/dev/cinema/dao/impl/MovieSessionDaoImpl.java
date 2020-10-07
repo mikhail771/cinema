@@ -14,7 +14,6 @@ import org.hibernate.query.Query;
 
 @Dao
 public class MovieSessionDaoImpl implements MovieSessionDao {
-
     @Override
     public MovieSession add(MovieSession movieSession) {
         Transaction transaction = null;
@@ -29,7 +28,8 @@ public class MovieSessionDaoImpl implements MovieSessionDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new DataProcessingException("Can't insert Movie Session entity", e);
+            throw new DataProcessingException("Can't insert Movie Session entity "
+                    + movieSession, e);
         } finally {
             if (session != null) {
                 session.close();
@@ -48,8 +48,6 @@ public class MovieSessionDaoImpl implements MovieSessionDao {
             query.setParameter("from", date.atTime(LocalTime.MIN));
             query.setParameter("to", date.atTime(LocalTime.MAX));
             return query.getResultList();
-        } catch (Exception e) {
-            throw new DataProcessingException("Failed to find available sessions", e);
         }
     }
 }

@@ -29,14 +29,19 @@ public class Main {
         UserService userService = (UserService) injector.getInstance(UserService.class);
         userService.add(user);
         logger.info("Created new user " + user.getEmail());
-        System.out.println("Get user by email:");
-        System.out.println(userService.findByEmail("asdf@gmail.com"));
+        logger.info("Get user by email:");
+        userService.findByEmail("asdf@gmail.com");
         AuthenticationService authenticationService =
                 (AuthenticationService) injector.getInstance(AuthenticationService.class);
         authenticationService.register("mixmix@gmail.com", "12345");
-        System.out.println("Is user logged in with correct password?");
-        System.out.println(authenticationService.login(user.getEmail(), "1234"));
-        System.out.println("=========HB-06==========");
+        logger.info("Is user logged in with correct password?");
+        try {
+            authenticationService.login(user.getEmail(), "1234");
+        } catch (Exception e) {
+            logger.warn("User " + user.getLogin() + " is not logged in");
+        }
+
+        logger.debug("=========HB-06==========");
 
         Movie movie = new Movie();
         movie.setTitle("MIB");
@@ -64,12 +69,16 @@ public class Main {
                 (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
         User user1 = userService.findByEmail("mixmix@gmail.com").get();
         shoppingCartService.addSession(movieSession, user1);
-        System.out.println(shoppingCartService.getByUser(user1));
+        try {
+            shoppingCartService.getByUser(user1);
+        } catch (Exception e) {
+            logger.warn("Can not find shopping cart for user " + user1);
+        }
 
         OrderService orderService =
                 (OrderService) injector.getInstance(OrderService.class);
         orderService.completeOrder(shoppingCartService.getByUser(user1).getTickets(), user1);
-        orderService.getOrderHistory(user1).forEach(System.out::println);
+        orderService.getOrderHistory(user1).forEach(logger::info);
         logger.info("Program ends");
     }
 }

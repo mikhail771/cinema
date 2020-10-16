@@ -30,7 +30,7 @@ public class Main {
         userService.add(user);
         logger.info("Created new user " + user.getEmail());
         logger.info("Get user by email:");
-        userService.findByEmail("asdf@gmail.com");
+        logger.info(userService.findByEmail("asdf@gmail.com"));
         AuthenticationService authenticationService =
                 (AuthenticationService) injector.getInstance(AuthenticationService.class);
         authenticationService.register("mixmix@gmail.com", "12345");
@@ -69,12 +69,7 @@ public class Main {
                 (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
         User user1 = userService.findByEmail("mixmix@gmail.com").get();
         shoppingCartService.addSession(movieSession, user1);
-        try {
-            shoppingCartService.getByUser(user1);
-        } catch (Exception e) {
-            logger.warn("Can not find shopping cart for user " + user1);
-        }
-
+        logger.info(shoppingCartService.getByUser(user1));
         OrderService orderService =
                 (OrderService) injector.getInstance(OrderService.class);
         orderService.completeOrder(shoppingCartService.getByUser(user1).getTickets(), user1);

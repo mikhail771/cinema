@@ -14,17 +14,21 @@ import com.dev.cinema.service.ShoppingCartService;
 import com.dev.cinema.service.UserService;
 import java.time.LocalDateTime;
 import javax.naming.AuthenticationException;
+import org.apache.log4j.Logger;
 
 public class Main {
     private static Injector injector = Injector.getInstance("com.dev.cinema");
+    private static final Logger logger = Logger.getLogger(Main.class);
 
     public static void main(String[] args) throws AuthenticationException {
+        logger.info("Program starts...");
         User user = new User();
         user.setEmail("asdf@gmail.com");
         user.setLogin("Alf");
         user.setPassword("1234");
         UserService userService = (UserService) injector.getInstance(UserService.class);
         userService.add(user);
+        logger.info("Created new user " + user.getEmail());
         System.out.println("Get user by email:");
         System.out.println(userService.findByEmail("asdf@gmail.com"));
         AuthenticationService authenticationService =
@@ -66,5 +70,6 @@ public class Main {
                 (OrderService) injector.getInstance(OrderService.class);
         orderService.completeOrder(shoppingCartService.getByUser(user1).getTickets(), user1);
         orderService.getOrderHistory(user1).forEach(System.out::println);
+        logger.info("Program ends");
     }
 }

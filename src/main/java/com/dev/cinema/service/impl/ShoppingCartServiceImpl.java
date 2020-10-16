@@ -9,9 +9,11 @@ import com.dev.cinema.model.ShoppingCart;
 import com.dev.cinema.model.Ticket;
 import com.dev.cinema.model.User;
 import com.dev.cinema.service.ShoppingCartService;
+import org.apache.log4j.Logger;
 
 @Service
 public class ShoppingCartServiceImpl implements ShoppingCartService {
+    private static final Logger logger = Logger.getLogger(ShoppingCartServiceImpl.class);
     @Inject
     private ShoppingCartDao shoppingCartDao;
     @Inject
@@ -19,6 +21,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public void addSession(MovieSession movieSession, User user) {
+        logger.info("addSession() method starts");
         Ticket ticket = new Ticket();
         ticket.setUser(user);
         ticket.setMovieSession(movieSession);
@@ -35,6 +38,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public void registerNewShoppingCart(User user) {
+        logger.info("Creating shopping cart for user " + user);
         ShoppingCart shoppingCart = new ShoppingCart();
         shoppingCart.setUser(user);
         shoppingCartDao.add(shoppingCart);
@@ -44,5 +48,6 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     public void clear(ShoppingCart shoppingCart) {
         shoppingCart.getTickets().clear();
         shoppingCartDao.update(shoppingCart);
+        logger.info("Shopping cart was cleared");
     }
 }

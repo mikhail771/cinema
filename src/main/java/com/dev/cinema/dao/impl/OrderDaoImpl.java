@@ -7,14 +7,18 @@ import com.dev.cinema.model.Order;
 import com.dev.cinema.model.User;
 import com.dev.cinema.util.HibernateUtil;
 import java.util.List;
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 @Dao
 public class OrderDaoImpl implements OrderDao {
+    private static final Logger logger = Logger.getLogger(OrderDaoImpl.class);
+
     @Override
     public Order add(Order order) {
+        logger.info("Method add called in OrderDaoImpl class");
         Transaction transaction = null;
         Session session = null;
         try {
@@ -22,6 +26,7 @@ public class OrderDaoImpl implements OrderDao {
             transaction = session.beginTransaction();
             session.save(order);
             transaction.commit();
+            logger.info(order + " created");
             return order;
         } catch (Exception e) {
             if (transaction != null) {
@@ -37,6 +42,8 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public List<Order> getUsersOrders(User user) {
+        logger.info("Method getUsersOrders called in OrderDaoImpl class "
+                + "for user " + user.getEmail());
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Query<Order> query = session.createQuery(
                     "SELECT DISTINCT o FROM Order o "

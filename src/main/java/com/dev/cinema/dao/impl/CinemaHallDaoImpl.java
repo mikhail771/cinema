@@ -48,4 +48,14 @@ public class CinemaHallDaoImpl implements CinemaHallDao {
             return getAllHallsQuery.getResultList();
         }
     }
+
+    @Override
+    public CinemaHall getById(Long id) {
+        try (Session session = sessionFactory.openSession()) {
+            return session.get(CinemaHall.class, id);
+        } catch (Exception e) {
+            throw new DataProcessingException("Failed to get CinemaHall with id "
+                    + id, e);
+        }
+    }
 }

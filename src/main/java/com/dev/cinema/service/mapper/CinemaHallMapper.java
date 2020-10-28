@@ -3,17 +3,10 @@ package com.dev.cinema.service.mapper;
 import com.dev.cinema.dto.CinemaHallRequestDto;
 import com.dev.cinema.dto.CinemaHallResponseDto;
 import com.dev.cinema.model.CinemaHall;
-import com.dev.cinema.service.CinemaHallService;
 import org.springframework.stereotype.Component;
 
 @Component
 public class CinemaHallMapper {
-    private final CinemaHallService cinemaHallService;
-
-    public CinemaHallMapper(CinemaHallService cinemaHallService) {
-        this.cinemaHallService = cinemaHallService;
-    }
-
     public CinemaHall mapDtoToEntity(CinemaHallRequestDto dto) {
         CinemaHall cinemaHall = new CinemaHall();
         cinemaHall.setName(dto.getName());

@@ -6,13 +6,6 @@ public class ShoppingCartResponseDto {
     private Long userId;
     private List<TicketResponseDto> tickets;
 
-    public ShoppingCartResponseDto() {
-    }
-
-    public ShoppingCartResponseDto(Long userId) {
-        this.userId = userId;
-    }
-
     public Long getUserId() {
         return userId;
     }

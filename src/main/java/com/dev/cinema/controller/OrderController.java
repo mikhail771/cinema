@@ -19,10 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/orders")
 public class OrderController {
-    private ShoppingCartService shoppingCartService;
-    private UserService userService;
-    private OrderService orderService;
-    private OrderMapper orderMapper;
+    private final ShoppingCartService shoppingCartService;
+    private final UserService userService;
+    private final OrderService orderService;
+    private final OrderMapper orderMapper;
 
     public OrderController(ShoppingCartService shoppingCartService,
                            UserService userService,
@@ -43,7 +43,7 @@ public class OrderController {
 
     @GetMapping
     public List<OrderResponseDto> getOrderHistory(@RequestParam Long userId) {
-        return orderService.getOrderHistory(userService.findById(userId).get()).stream()
+        return orderService.getOrderHistory(userService.findById(userId)).stream()
                 .map(orderMapper::mapToDto)
                 .collect(Collectors.toList());
     }

@@ -1,7 +1,6 @@
 package com.dev.cinema.controller;
 
 import com.dev.cinema.dto.OrderResponseDto;
-import com.dev.cinema.model.Order;
 import com.dev.cinema.model.ShoppingCart;
 import com.dev.cinema.model.User;
 import com.dev.cinema.service.OrderService;
@@ -35,10 +34,10 @@ public class OrderController {
     }
 
     @PostMapping("/complete")
-    public Order completeOrder(@RequestParam String email) {
+    public void completeOrder(@RequestParam String email) {
         User user = userService.findByEmail(email).get();
         ShoppingCart cart = shoppingCartService.getByUser(user);
-        return orderService.completeOrder(cart.getTickets(), user);
+        orderService.completeOrder(cart.getTickets(), user);
     }
 
     @GetMapping
